@@ -1,16 +1,11 @@
 import React, { useState } from "react";
+import { auth, sendPasswordResetEmail } from "../firebase";
 import {
-    auth,
-    googleProvider,
-    sendPasswordResetEmail,
-    signInWithEmailAndPassword,
-    signInWithPopup,
-} from "../firebase";
+    getFriendlyErrorMessage,
+    handleEmailLogin,
+    handleGoogleLogin,
+} from "../utils/authHelpers";
 import "./login.css";
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/icon?family=Material+Icons"
-></link>;
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,22 +21,11 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError("");
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // Login bem-sucedido - redirecionar ou fazer algo
-    } catch (err) {
-      setError(err.message);
-    }
+    await handleEmailLogin(email, password, setError);
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-      // Login com Google bem-sucedido
-    } catch (err) {
-      setError(err.message);
-    }
+  const handleGoogleSignIn = async () => {
+    await handleGoogleLogin(setError);
   };
 
   const handlePasswordReset = async () => {
@@ -53,8 +37,9 @@ const Login = () => {
       await sendPasswordResetEmail(auth, resetEmail);
       alert(`E-mail de redefinição enviado para ${resetEmail}`);
       setShowResetModal(false);
+      setError("");
     } catch (err) {
-      setError(err.message);
+      setError(getFriendlyErrorMessage(err.code));
     }
   };
 
@@ -74,10 +59,19 @@ const Login = () => {
       <div className="login-panel">
         <div className="login-box">
           <h2>Login</h2>
-          {error && <div className="error-message">{error}</div>}
+          {error && (
+            <div className="error-message">
+              {error}
+              {error.includes("Google") && (
+                <button onClick={handleGoogleSignIn} className="retry-button">
+                  Tentar novamente
+                </button>
+              )}
+            </div>
+          )}
           <form onSubmit={handleLogin}>
             <input
-              classname="email"
+              className="email"
               type="email"
               placeholder="E-mail"
               required
@@ -110,10 +104,11 @@ const Login = () => {
           </form>
 
           <div className="social-login">
-            <button onClick={handleGoogleLogin} className="google-btn">
+            <button onClick={handleGoogleSignIn} className="google-btn">
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png"
                 alt="Google"
+                className="google-icon"
               />
               Entrar com Google
             </button>
@@ -121,7 +116,6 @@ const Login = () => {
         </div>
       </div>
 
-      {/* Modal de Esqueci a Senha */}
       {showResetModal && (
         <div className="modal-overlay">
           <div className="reset-modal">

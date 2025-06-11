@@ -13,6 +13,8 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
+console.log("Firebase Config:", firebaseConfig); // Adicione esta linha
+console.log("API Key:", process.env.REACT_APP_FIREBASE_API_KEY); // Adicione esta linha
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app); // Se você estiver usando o Analytics
@@ -20,6 +22,7 @@ const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
 export {
-    auth,
-    googleProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup
+  auth,
+  googleProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup
 };
+
