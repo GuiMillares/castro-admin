@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { auth, sendPasswordResetEmail } from "../firebase";
 import {
-    getFriendlyErrorMessage,
-    handleEmailLogin,
-    handleGoogleLogin,
+  getFriendlyErrorMessage,
+  handleEmailLogin,
+  handleGoogleLogin,
 } from "../utils/authHelpers";
 import "./login.css";
 
@@ -14,6 +15,21 @@ const Login = () => {
   const [resetEmail, setResetEmail] = useState("");
   const [showResetModal, setShowResetModal] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true); // novo estado
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      if (user) {
+        navigate('/dashboard');
+      } else {
+        setLoading(false); // agora pode mostrar a tela de login
+      }
+    });
+    return unsubscribe;
+  }, [navigate]);
+  
+  if (loading) return null; 
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -21,11 +37,17 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    await handleEmailLogin(email, password, setError);
+    const success = await handleEmailLogin(email, password, setError);
+    if (success) {
+      navigate('/dashboard'); // Adicionar redirecionamento
+    }
   };
 
   const handleGoogleSignIn = async () => {
-    await handleGoogleLogin(setError);
+    const success = await handleGoogleLogin(setError);
+    if (success) {
+      navigate('/dashboard'); // Adicionar redirecionamento
+    }
   };
 
   const handlePasswordReset = async () => {
@@ -93,9 +115,6 @@ const Login = () => {
               </span>
             </div>
             <div className="options">
-              <label>
-                <input type="checkbox" /> Lembrar-me
-              </label>
               <a href="#" onClick={() => setShowResetModal(true)}>
                 Esqueci a senha
               </a>

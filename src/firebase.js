@@ -23,6 +23,9 @@ const googleProvider = new GoogleAuthProvider();
 
 export {
   auth,
-  googleProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup
+  googleProvider,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup
 };
 

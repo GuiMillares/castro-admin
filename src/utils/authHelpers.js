@@ -1,9 +1,5 @@
-import {
-    auth,
-    googleProvider,
-    signInWithEmailAndPassword,
-    signInWithPopup,
-} from "../firebase";
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider } from '../firebase';
 
 // Função para traduzir os códigos de erro
 export const getFriendlyErrorMessage = (errorCode) => {
@@ -28,25 +24,23 @@ export const getFriendlyErrorMessage = (errorCode) => {
   }
 };
 
-// Handler para login tradicional
 export const handleEmailLogin = async (email, password, setError) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    return true; // Login bem-sucedido
+    return true;
   } catch (err) {
     setError(getFriendlyErrorMessage(err.code));
-    return false; // Login falhou
+    return false;
   }
 };
 
-// Handler para login com Google
 export const handleGoogleLogin = async (setError) => {
   try {
     await signInWithPopup(auth, googleProvider);
     return true;
   } catch (err) {
-    if (err.code !== "auth/cancelled-popup-request") {
-      setError(getFriendlyErrorMessage(err.code || "auth/google-login-failed"));
+    if (err.code !== 'auth/cancelled-popup-request') {
+      setError(getFriendlyErrorMessage(err.code || 'auth/google-login-failed'));
     }
     return false;
   }
