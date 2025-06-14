@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { FaArrowDown, FaArrowUp, FaCalendarDays, FaClock, FaHouse, FaLayerGroup, FaPalette, FaPuzzlePiece, FaRightFromBracket, FaUserTie } from 'react-icons/fa6';
+import { FaArrowDown, FaArrowUp, FaCalendarDays, FaHouse, FaLayerGroup, FaPalette, FaPuzzlePiece, FaRightFromBracket, FaRocket, FaUserTie } from 'react-icons/fa6';
 import './dashboard.css';
+
 
 const Dashboard = () => {
   const [panelVisible, setPanelVisible] = useState(false);
@@ -119,7 +120,7 @@ const Dashboard = () => {
       )}
 
       <header className="app-header">
-        <h1><FaClock /> NascTime</h1>
+        <h1><FaRocket /> Synchro</h1>
         <nav className="nav-menu">
           <ul>
             <li><FaHouse /><span>Início</span></li>
@@ -155,7 +156,7 @@ const Dashboard = () => {
       </main>
 
       <footer className="app-footer">
-        &copy; 2025 NascTime. Plataforma inteligente para agendamentos profissionais.
+        &copy; 2025 Synchro. Plataforma inteligente para agendamentos profissionais.
       </footer>
     </div>
   );

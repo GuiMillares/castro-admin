@@ -69,7 +69,7 @@ const Login = () => {
     <div className="main-content">
       <div className="left-panel">
         <div className="motivational-text">
-          <div className="brand">Castro Admin</div>
+          <div className="brand">Syncro</div>
           <h1>Agende com facilidade, gerencie com precisão.</h1>
           <p>
             Agendamentos automáticos, gestão de equipe e serviços tudo em um só
