@@ -1,6 +1,7 @@
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { doc, getDoc, getFirestore, setDoc } from 'firebase/firestore';
 
 // As variáveis de ambiente são acessadas via process.env.
 // No Create React App, elas devem começar com REACT_APP_
@@ -20,12 +21,12 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app); // Se você estiver usando o Analytics
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
+const db = getFirestore(app);
+
 
 export {
-  auth,
-  googleProvider,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
+  auth, db, doc, getDoc, googleProvider,
+  sendPasswordResetEmail, setDoc, signInWithEmailAndPassword,
   signInWithPopup
 };
 
